@@ -1,3 +1,55 @@
+
+# PART 1: DIABETES CLASSIFICATION MODEL
+
+from numpy import loadtxt
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
+
+# Load dataset (Diabetes dataset)
+dataset = loadtxt('/content/sample_data/diabetes (1).csv', delimiter=',', skiprows=1)
+
+# Split dataset into input (X) and output (Y)
+X = dataset[:, 0:8]
+Y = dataset[:, 8]
+
+# Display sample data
+print("Sample Input Data:\n", X[:5])
+print("\nSample Output Data:\n", Y[:5])
+
+# Create Neural Network model
+model = Sequential()
+model.add(Dense(12, input_dim=8, activation='relu'))   # Hidden layer 1
+model.add(Dense(8, activation='relu'))                 # Hidden layer 2
+model.add(Dense(1, activation='sigmoid'))              # Output layer
+
+# Compile the model
+model.compile(loss='binary_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+# Train the model
+model.fit(X, Y, epochs=150, batch_size=10, verbose=0)
+
+# Evaluate model performance
+_, accuracy = model.evaluate(X, Y, verbose=0)
+print("\nAccuracy of model is:", accuracy * 100)
+
+# Make predictions (convert probability → 0 or 1)
+predictions = model.predict(X)
+prediction = (predictions > 0.5).astype(int)
+
+# Display first 5 results
+print("\nFirst 5 Predictions (Classification):\n")
+for i in range(5):
+    print("Input:", X[i].tolist(),
+          "Predicted:", prediction[i][0],
+          "Actual:", int(Y[i])
+
+
+#part 2
+
+
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
